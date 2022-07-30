@@ -6,7 +6,10 @@
 			<b-row>
 				<comp-control
 					v-bind:strSearch="strSearch"
+					v-bind:orderBy="orderBy"
+					v-bind:orderDir="orderDir"
 					v-on:handleSearch="handleSearch"
+					v-on:handleSort="handleSort"
 				/>
 
 				<comp-form
@@ -16,7 +19,7 @@
 			</b-row>
 
 			<todo-list-table
-				v-bind:listTask="listTaskSearch"
+				v-bind:listTask="listTaskSort"
 			/>
 		</b-container>
 	</div>
@@ -36,7 +39,9 @@ export default {
 		return {
 			isShowForm: false,
 			listTask: listTask,
-			strSearch: ''
+			strSearch: '',
+			orderBy: 'name',
+			orderDir: 'asc',
 		}
 	},
 	components: {
@@ -47,12 +52,17 @@ export default {
 	},
 	computed: {
 		listTaskSearch() {
-			const { strSearch } = this; //khai báo kiểu destructing es6
+			const { strSearch } = this; //destructing
 			var newItems = this.listTask.filter(item => {
 				return item.name.toLocaleLowerCase().includes(strSearch.toLocaleLowerCase());
 			});
 			return newItems;
+		},
+		listTaskSort() {
+			var listTask = [...this.listTaskSearch]; // spread operator
+			listTask.sort(this.compareSort);
 
+			return listTask;
 		}
 	},
 	methods: {
@@ -63,6 +73,18 @@ export default {
 		handleSearch(data){
 			console.log('handleSearch app.vue');
 			this.strSearch = data;
+		},
+		handleSort(data){
+			this.orderBy = data.orderBy;
+			this.orderDir = data.orderDir;
+			console.log('handleSort app.vue', data);
+		},
+		compareSort(a, b){
+			var numberSort = this.orderDir == 'asc' ? -1 :  1;
+
+			if(a[this.orderBy] < b[this.orderBy]) return numberSort;
+			else if(a[this.orderBy] > b[this.orderBy]) return numberSort * (-1);
+			return 0;
 		}
 	}
 }

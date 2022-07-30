@@ -1,7 +1,11 @@
 <template>
     <div class="col-12 col-lg-6">
         <div class="row">
-            <control-sort/>
+            <control-sort
+                v-bind:orderBy="orderBy"
+                v-bind:orderDir="orderDir"
+                v-on:handleSort="handleSort"
+            />
 
             <control-search
             v-bind:strSearch="strSearch"
@@ -21,7 +25,9 @@ export default{
         ControlSearch
     },
     props: {
-        strSearch: {type: String, default: ''}
+        strSearch: {type: String, default: ''},
+        orderBy: {type: String, default: 'name'},
+        orderDir: {type: String, default: 'asc'}
     },
     data(){
         return { }
@@ -30,6 +36,10 @@ export default{
         handleSearch(data) {
             console.log('handleSearch CompControl.vue');
             this.$emit('handleSearch', data);
+        },
+        handleSort(data) {
+            console.log('handleSort CompControl.vue');
+            this.$emit('handleSort', data);
         }
     }
 }
