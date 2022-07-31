@@ -43,7 +43,7 @@ export default {
 	data() {
 		return {
 			isShowForm: false,
-			listTask: listTask,
+			listTask: null,
 			strSearch: '',
 			orderBy: 'name',
 			orderDir: 'asc',
@@ -55,6 +55,12 @@ export default {
 		CompControl, 
 		CompForm,
 		TodoListTable
+	},
+	watch: {
+		listTask: function(newTasks) {
+			var tasksString = JSON.stringify(newTasks);
+				localStorage.setItem('tasks', tasksString);
+		}
 	},
 	computed: {
 		listTaskSearch() {
@@ -69,6 +75,14 @@ export default {
 			listTask.sort(this.compareSort);
 
 			return listTask;
+		}
+	},
+	created() {
+		let tasks = localStorage.getItem('tasks');
+		if(tasks !== null){
+			this.listTask = JSON.parse(tasks);
+		}else {
+			this.listTask = [];
 		}
 	},
 	methods: {
