@@ -17,6 +17,7 @@
 					v-on:toggleForm="toggleForm"
 					v-bind:taskSelected="taskSelected"
 					v-on:handleAddNewTask="handleAddNewTask"
+					v-on:handleEditTaskById="handleEditTaskById"
 				/>
 			</b-row>
 
@@ -72,6 +73,7 @@ export default {
 	},
 	methods: {
 		toggleForm() {
+			if(this.isShowForm) this.taskSelected = null;
 			console.log('toggleForm App.vue');
 			this.isShowForm = !this.isShowForm;
 		},
@@ -102,7 +104,16 @@ export default {
 		handleEdit(taskEdit) {
 			this.isShowForm = true;
 			this.taskSelected = taskEdit;
+		},
+		handleEditTaskById(taskEdit){
+			let index = this.listTask.findIndex(item => item.id === taskEdit.id);
+
+			if(index !== -1) {
+				this.listTask.splice(index, 1, taskEdit);
+				this.toggleForm();
+			}
 		}
+		
 	}
 }
 </script>

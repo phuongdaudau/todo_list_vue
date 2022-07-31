@@ -23,7 +23,13 @@
                 v-if="taskSelected === null"
                 v-on:click="handleAddNew"
                 type="button" class="btn btn-primary">Submit</button>
-            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button 
+                v-else
+                v-on:click="handleEditTask"
+                type="button" class="btn btn-primary">Update</button>
+            <button 
+                v-on:click="handleCancel"
+                type="button" class="btn btn-secondary">Cancel</button>
         </form>
     </b-col>
 </template>
@@ -47,6 +53,15 @@ export default {
             level: 0
         }
     }, 
+    watch: {
+        taskSelected: function(newData, oldData){
+            if(newData != null){
+                this.taskname = newData.name;
+                this.level - newData.level;
+            }
+            console.log("watcher taskSelected", newData, oldData);
+        }
+    },
     methods: {
         handleToggleForm(){
             console.log("handleAddTag CompForm.vue");
@@ -69,6 +84,15 @@ export default {
         handleResetData() {
             this.taskname = '';
             this.level = 0;
+        },
+        handleEditTask() {
+            let objEditTask = {
+                id: this.taskSelected.id,
+                name: this.taskname,
+                level: parseInt(this.level)
+            }
+            this.$emit('handleEditTaskById', objEditTask);
+            this.handleResetData();
         }
     }
 }
