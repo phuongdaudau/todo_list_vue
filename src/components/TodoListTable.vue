@@ -17,6 +17,8 @@
                 v-bind:key="task.id"
                 v-bind:task="task"
                 v-bind:index="index +1"
+                v-on:handleDelete="handleDelete"
+                v-on:handleEdit="handleEdit"
                 />
             </tbody>
             <tbody v-else>
@@ -42,6 +44,15 @@ export default {
     data(){
         return {
 
+        }
+    },
+    methods: {
+        handleDelete(taskDelete) {
+            console.log('handleDelete todoListTable.vue');
+            this.$emit('handleDelete', taskDelete);
+        },
+        handleEdit(taskEdit){
+            this.$emit('handleEdit', taskEdit);
         }
     }
 }

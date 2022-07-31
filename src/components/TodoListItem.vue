@@ -4,8 +4,12 @@
         <td>{{ task.name }}</td>
         <td class="text-center"><span v-bind:class="classLevel">{{ getLevelName}}</span></td>
         <td>
-            <button type="button" class="btn btn-warning">Edit</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button 
+                v-on:click="handleEdit"
+                type="button" class="btn btn-warning">Edit</button>
+            <button 
+                v-on:click="handleDelete"
+                type="button" class="btn btn-danger">Delete</button>
         </td>
     </tr>
 </template>
@@ -32,7 +36,13 @@ export default {
         }
     },
     methods: {
-
+        handleDelete(){
+            if(confirm('Bạn có muốn xóa task có tên là ' + this.task.name));
+                this.$emit('handleDelete', this.task);
+        },
+        handleEdit(taskEdit) {
+            this.$emit('handleEdit', taskEdit);
+        }
     }
 }
 </script>

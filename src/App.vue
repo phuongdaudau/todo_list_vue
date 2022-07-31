@@ -15,11 +15,15 @@
 				<comp-form
 					v-bind:isShowForm="isShowForm"
 					v-on:toggleForm="toggleForm"
+					v-bind:taskSelected="taskSelected"
+					v-on:handleAddNewTask="handleAddNewTask"
 				/>
 			</b-row>
 
 			<todo-list-table
 				v-bind:listTask="listTaskSort"
+				v-on:handleDelete="handleDelete"
+				v-on:handleEdit="handleEdit"
 			/>
 		</b-container>
 	</div>
@@ -42,6 +46,7 @@ export default {
 			strSearch: '',
 			orderBy: 'name',
 			orderDir: 'asc',
+			taskSelected: null
 		}
 	},
 	components: {
@@ -85,6 +90,18 @@ export default {
 			if(a[this.orderBy] < b[this.orderBy]) return numberSort;
 			else if(a[this.orderBy] > b[this.orderBy]) return numberSort * (-1);
 			return 0;
+		},
+		handleDelete(taskDelete) {
+			this.listTask = this.listTask.filter(item => item.id != taskDelete.id);
+			console.log('handleDelete App.vue: ', taskDelete);
+		},
+		handleAddNewTask(newTask){
+			this.listTask.push(newTask);
+			console.log('handleAddTask app.vue',newTask);
+		},
+		handleEdit(taskEdit) {
+			this.isShowForm = true;
+			this.taskSelected = taskEdit;
 		}
 	}
 }
